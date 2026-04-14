@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Un Mes Juntos 💛</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a0a0a;
+    font-family: 'Lato', sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* ===== PANTALLA INICIAL ===== */
+  #pantalla-inicio {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at center, #1a0a2e 0%, #0a0a0a 70%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    transition: opacity 1.2s ease, visibility 1.2s ease;
+  }
+
+  #pantalla-inicio.oculto {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .titulo-inicio {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 5vw, 3rem);
+    color: #f5c842;
+    letter-spacing: 3px;
+    text-align: center;
+    margin-bottom: 10px;
+    animation: pulsoTexto 2s ease-in-out infinite;
+  }
+
+  .subtitulo-inicio {
+    font-size: clamp(0.8rem, 2vw, 1rem);
+    color: #c8a0d0;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    margin-bottom: 60px;
+    text-align: center;
+  }
+
+  @keyframes pulsoTexto {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 1; }
+  }
+
+  /* ===== CORAZÓN PRINCIPAL ===== */
+  .corazon-wrapper {
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .corazon-svg {
+    width: clamp(100px, 20vw, 160px);
+    filter: drop-shadow(0 0 20px #ff4d6d) drop-shadow(0 0 60px #ff006e44);
+    animation: latido 1.2s ease-in-out infinite;
+    transition: transform 0.2s ease;
+  }
+
+  .corazon-svg:hover { transform: scale(1.1); }
+
+  @keyframes latido {
+    0%, 100% { transform: scale(1); }
+    14% { transform: scale(1.15); }
+    28% { transform: scale(1); }
+    42% { transform: scale(1.1); }
+    70% { transform: scale(1); }
+  }
+
+  .instruccion {
+    color: #c8a0d0;
+    font-size: clamp(0.75rem, 2vw, 0.95rem);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    animation: parpadeo 2.5s ease-in-out infinite;
+  }
+
+  @keyframes parpadeo {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  /* Partículas de corazones flotantes */
+  .particula {
+    position: absolute;
+    pointer-events: none;
+    font-size: 16px;
+    animation: flotar linear forwards;
+  }
+
+  @keyframes flotar {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(-200px) rotate(360deg); opacity: 0; }
+  }
+
+  /* ===== CONTENIDO PRINCIPAL ===== */
+  #contenido-principal {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(180deg, #0d0d1a 0%, #1a1205 30%, #0d1a0d 60%, #0a0a0a 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  #contenido-principal.visible { display: flex; }
+
+  /* Estrellas de fondo */
+  .estrellas {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .estrella {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle linear infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.1; }
+    50% { opacity: 0.8; }
+  }
+
+  /* ===== GIRASOL ===== */
+  .girasol-container {
+    position: relative;
+    width: clamp(220px, 50vw, 400px);
+    height: clamp(220px, 50vw, 400px);
+    margin-top: 40px;
+    z-index: 2;
+    animation: aparecerGirasol 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    opacity: 0;
+  }
+
+  @keyframes aparecerGirasol {
+    0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+
+  .girasol-svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 0 30px #f5c84255);
+    animation: girarSuave 20s linear infinite;
+  }
+
+  @keyframes girarSuave {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* ===== SECCIÓN DEL CONTADOR ===== */
+  .seccion-amor {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 40px 20px;
+    max-width: 800px;
+    width: 100%;
+  }
+
+  .frase-amor {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.2rem, 4vw, 2rem);
+    color: #f5c842;
+    font-style: italic;
+    margin-bottom: 10px;
+    animation: fadeInUp 1s ease forwards;
+    animation-delay: 1.5s;
+    opacity: 0;
+  }
+
+  .para-ti {
+    color: #ff8fab;
+    font-size: clamp(0.8rem, 2vw, 1rem);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+    animation: fadeInUp 1s ease forwards;
+    animation-delay: 1.8s;
+    opacity: 0;
+  }
+
+  @keyframes fadeInUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  /* Contador */
+  .contador-wrapper {
+    background: linear-gradient(135deg, #1a0a2e22, #2a1a0822);
+    border: 1px solid #f5c84233;
+    border-radius: 20px;
+    padding: 30px;
+    backdrop-filter: blur(10px);
+    margin-bottom: 20px;
+    animation: fadeInUp 1s ease forwards;
+    animation-delay: 2s;
+    opacity: 0;
+  }
+
+  .contador-titulo {
+    color: #c8a0d0;
+    font-size: clamp(0.7rem, 2vw, 0.85rem);
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    margin-bottom: 25px;
+  }
+
+  .contador-grid {
+    display: flex;
+    gap: clamp(10px, 3vw, 30px);
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .unidad {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .numero {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    color: #f5c842;
+    font-weight: 700;
+    line-height: 1;
+    text-shadow: 0 0 30px #f5c84288;
+    min-width: 80px;
+    display: block;
+    text-align: center;
+  }
+
+  .etiqueta {
+    color: #c8a0d070;
+    font-size: clamp(0.6rem, 1.5vw, 0.75rem);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  .separador {
+    font-size: clamp(2rem, 6vw, 4rem);
+    color: #f5c84244;
+    align-self: flex-start;
+    padding-top: 8px;
+  }
+
+  /* ===== FOTOS ===== */
+  .fotos-seccion {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 900px;
+    padding: 20px;
+    animation: fadeInUp 1s ease forwards;
+    animation-delay: 2.4s;
+    opacity: 0;
+  }
+
+  .fotos-titulo {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.2rem, 3vw, 1.6rem);
+    color: #f5c842;
+    text-align: center;
+    margin-bottom: 30px;
+    font-style: italic;
+  }
+
+  .fotos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(clamp(130px, 25vw, 200px), 1fr));
+    gap: 15px;
+  }
+
+  .foto-frame {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 2px solid #f5c84244;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    cursor: pointer;
+    background: #1a1205;
+  }
+
+  .foto-frame:hover {
+    transform: scale(1.05) rotate(1deg);
+    border-color: #f5c842;
+    box-shadow: 0 0 30px #f5c84244, 0 20px 40px #00000066;
+  }
+
+  .foto-frame:nth-child(even):hover { transform: scale(1.05) rotate(-1deg); }
+
+  .foto-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .foto-frame:hover img { transform: scale(1.08); }
+
+  .foto-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, #0a0a0add 0%, transparent 60%);
+    display: flex;
+    align-items: flex-end;
+    padding: 12px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .foto-frame:hover .foto-overlay { opacity: 1; }
+
+  .foto-caption {
+    color: #f5c842;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    font-style: italic;
+  }
+
+  /* Placeholder cuando no hay fotos reales */
+  .foto-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1a0a2e, #2a1405);
+    gap: 10px;
+    padding: 15px;
+    text-align: center;
+  }
+
+  .foto-placeholder svg { opacity: 0.6; }
+
+  .foto-placeholder span {
+    color: #f5c84288;
+    font-size: clamp(0.6rem, 1.5vw, 0.75rem);
+    font-style: italic;
+    letter-spacing: 1px;
+  }
+
+  /* ===== MENSAJE FINAL ===== */
+  .mensaje-final {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 50px 20px 80px;
+    max-width: 600px;
+    animation: fadeInUp 1s ease forwards;
+    animation-delay: 2.8s;
+    opacity: 0;
+  }
+
+  .mensaje-texto {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1rem, 3vw, 1.4rem);
+    color: #e8e0ff99;
+    line-height: 1.9;
+    font-style: italic;
+  }
+
+  .firma {
+    margin-top: 30px;
+    color: #ff8fab;
+    font-size: clamp(1rem, 3vw, 1.3rem);
+    letter-spacing: 3px;
+  }
+
+  /* Corazones flotantes de fondo */
+  @keyframes floatHeart {
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.2; }
+    100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+  }
+
+  .heart-bg {
+    position: fixed;
+    bottom: -20px;
+    pointer-events: none;
+    font-size: 20px;
+    z-index: 1;
+    animation: floatHeart linear infinite;
+  }
+
+  /* ===== MÚSICA - botón flotante ===== */
+  #btn-musica {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    z-index: 200;
+    background: #f5c842;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 20px #f5c84266;
+    transition: all 0.3s ease;
+    font-size: 20px;
+  }
+
+  #btn-musica:hover { transform: scale(1.1); }
+
+  /* ===== LIGHTBOX ===== */
+  #lightbox {
+    position: fixed;
+    inset: 0;
+    background: #000000ee;
+    z-index: 300;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  #lightbox.activo { display: flex; }
+
+  #lightbox img {
+    max-width: 90vw;
+    max-height: 85vh;
+    border-radius: 12px;
+    border: 2px solid #f5c84244;
+    object-fit: contain;
+  }
+
+  #lightbox-cerrar {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+
+  #lightbox-cerrar:hover { opacity: 1; }
+
+  /* INSTRUCCION DE FOTOS */
+  .aviso-fotos {
+    background: #f5c84211;
+    border: 1px dashed #f5c84255;
+    border-radius: 12px;
+    padding: 15px 20px;
+    text-align: center;
+    margin-top: 15px;
+    color: #f5c84299;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    line-height: 1.6;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- ===== PANTALLA DE INICIO ===== -->
+<div id="pantalla-inicio">
+  <p class="titulo-inicio">Para ti,<br>Mi amor ❤️</p>
+  <p class="subtitulo-inicio">haz clic en el corazón</p>
+  <div class="corazon-wrapper" onclick="abrirMagia(event)">
+    <svg class="corazon-svg" viewBox="0 0 100 90" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="gHeart" cx="50%" cy="40%">
+          <stop offset="0%" stop-color="#ff8fab"/>
+          <stop offset="100%" stop-color="#c9184a"/>
+        </radialGradient>
+      </defs>
+      <path d="M50 85 C50 85 5 55 5 28 C5 14 16 5 28 5 C36 5 43 9 50 17 C57 9 64 5 72 5 C84 5 95 14 95 28 C95 55 50 85 50 85Z"
+            fill="url(#gHeart)" />
+      <path d="M25 22 C22 28 23 35 28 40" stroke="white" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.4"/>
+    </svg>
+    <span class="instruccion">✨ toca aquí ✨</span>
+  </div>
+</div>
+
+<!-- ===== CONTENIDO PRINCIPAL ===== -->
+<div id="contenido-principal">
+
+  <!-- Estrellas -->
+  <div class="estrellas" id="estrellas"></div>
+
+  <!-- Corazones flotantes de fondo -->
+  <div id="corazones-bg"></div>
+
+  <!-- GIRASOL -->
+  <div class="girasol-container">
+    <svg class="girasol-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <!-- Pétalos externos -->
+      <g id="petalos">
+        <ellipse cx="100" cy="30" rx="12" ry="28" fill="#f5c842" opacity="0.95"/>
+        <ellipse cx="100" cy="30" rx="12" ry="28" fill="#f5c842" opacity="0.95" transform="rotate(30,100,100)"/>
+        <ellipse cx="100" cy="30" rx="12" ry="28" fill="#f5c842" opacity="0.95" transform="rotate(60,100,100)"/>
+        <ellipse cx="100" cy="30" rx="12" ry="28" fill="#f5c842" opacity="0.95" transform="rotate(90,100,100)"/>
+        <ellipse cx="100" cy="30" rx="12" ry="28" fill="#f5c842" opacity="0.95" transform="rotate(120,100,100)"/>
+        <ellipse cx="100" cy="30" rx="12" ry="28" fill="#f5c842" opacity="0.95" transform="rotate(150,100,100)"/>
+        <ellipse cx="100" cy="30" rx="12" ry="28" fill="#f5c842" opacity="0.95" transform="rotate(180,100,100)"/>
+        <ellipse cx="100" cy="30" rx="12" ry="28" fill="#f5c842" opacity="0.95" transform="rotate(210,100,100)"/>
+        <ellipse cx="100" cy="30" rx="12" ry="28" fill="#f5c842" opacity="0.95" transform="rotate(240,100,100)"/>
+        <ellipse cx="100" cy="30" rx="12" ry="28" fill="#f5c842" opacity="0.95" transform="rotate(270,100,100)"/>
+        <ellipse cx="100" cy="30" rx="12" ry="28" fill="#f5c842" opacity="0.95" transform="rotate(300,100,100)"/>
+        <ellipse cx="100" cy="30" rx="12" ry="28" fill="#f5c842" opacity="0.95" transform="rotate(330,100,100)"/>
+        <!-- Capa interior de pétalos -->
+        <ellipse cx="100" cy="42" rx="9" ry="20" fill="#e8a000" opacity="0.7" transform="rotate(15,100,100)"/>
+        <ellipse cx="100" cy="42" rx="9" ry="20" fill="#e8a000" opacity="0.7" transform="rotate(45,100,100)"/>
+        <ellipse cx="100" cy="42" rx="9" ry="20" fill="#e8a000" opacity="0.7" transform="rotate(75,100,100)"/>
+        <ellipse cx="100" cy="42" rx="9" ry="20" fill="#e8a000" opacity="0.7" transform="rotate(105,100,100)"/>
+        <ellipse cx="100" cy="42" rx="9" ry="20" fill="#e8a000" opacity="0.7" transform="rotate(135,100,100)"/>
+        <ellipse cx="100" cy="42" rx="9" ry="20" fill="#e8a000" opacity="0.7" transform="rotate(165,100,100)"/>
+        <ellipse cx="100" cy="42" rx="9" ry="20" fill="#e8a000" opacity="0.7" transform="rotate(195,100,100)"/>
+        <ellipse cx="100" cy="42" rx="9" ry="20" fill="#e8a000" opacity="0.7" transform="rotate(225,100,100)"/>
+        <ellipse cx="100" cy="42" rx="9" ry="20" fill="#e8a000" opacity="0.7" transform="rotate(255,100,100)"/>
+        <ellipse cx="100" cy="42" rx="9" ry="20" fill="#e8a000" opacity="0.7" transform="rotate(285,100,100)"/>
+        <ellipse cx="100" cy="42" rx="9" ry="20" fill="#e8a000" opacity="0.7" transform="rotate(315,100,100)"/>
+        <ellipse cx="100" cy="42" rx="9" ry="20" fill="#e8a000" opacity="0.7" transform="rotate(345,100,100)"/>
+      </g>
+      <!-- Centro del girasol -->
+      <circle cx="100" cy="100" r="38" fill="#3d1f00"/>
+      <circle cx="100" cy="100" r="34" fill="#5c2d00"/>
+      <!-- Semillas en espiral (puntos) -->
+      <g fill="#c8860a" opacity="0.9">
+        <circle cx="100" cy="74" r="2.5"/>
+        <circle cx="112" cy="77" r="2.5"/>
+        <circle cx="120" cy="86" r="2.5"/>
+        <circle cx="122" cy="98" r="2.5"/>
+        <circle cx="116" cy="109" r="2.5"/>
+        <circle cx="106" cy="116" r="2.5"/>
+        <circle cx="94" cy="116" r="2.5"/>
+        <circle cx="84" cy="109" r="2.5"/>
+        <circle cx="78" cy="98" r="2.5"/>
+        <circle cx="80" cy="86" r="2.5"/>
+        <circle cx="88" cy="77" r="2.5"/>
+        <circle cx="100" cy="80" r="2"/>
+        <circle cx="109" cy="83" r="2"/>
+        <circle cx="115" cy="91" r="2"/>
+        <circle cx="116" cy="101" r="2"/>
+        <circle cx="111" cy="110" r="2"/>
+        <circle cx="102" cy="114" r="2"/>
+        <circle cx="92" cy="112" r="2"/>
+        <circle cx="85" cy="105" r="2"/>
+        <circle cx="84" cy="95" r="2"/>
+        <circle cx="89" cy="86" r="2"/>
+        <circle cx="100" cy="88" r="1.5"/>
+        <circle cx="107" cy="91" r="1.5"/>
+        <circle cx="111" cy="98" r="1.5"/>
+        <circle cx="108" cy="106" r="1.5"/>
+        <circle cx="100" cy="109" r="1.5"/>
+        <circle cx="92" cy="106" r="1.5"/>
+        <circle cx="89" cy="98" r="1.5"/>
+        <circle cx="92" cy="91" r="1.5"/>
+        <circle cx="100" cy="97" r="3" fill="#e8a000"/>
+      </g>
+      <!-- Brillo en el centro -->
+      <ellipse cx="90" cy="88" rx="8" ry="5" fill="white" opacity="0.06" transform="rotate(-20,90,88)"/>
+    </svg>
+  </div>
+
+  <!-- SECCIÓN AMOR / CONTADOR -->
+  <div class="seccion-amor">
+    <p class="frase-amor">"Un mes de risas, abrazos y momentos perfectos"</p>
+    <p class="para-ti">— con todo mi corazón, para ti —</p>
+
+    <div class="contador-wrapper">
+      <p class="contador-titulo">💛 llevamos juntos</p>
+      <div class="contador-grid">
+        <div class="unidad">
+          <span class="numero" id="dias">31</span>
+          <span class="etiqueta">días</span>
+        </div>
+        <span class="separador">:</span>
+        <div class="unidad">
+          <span class="numero" id="horas">00</span>
+          <span class="etiqueta">horas</span>
+        </div>
+        <span class="separador">:</span>
+        <div class="unidad">
+          <span class="numero" id="minutos">00</span>
+          <span class="etiqueta">minutos</span>
+        </div>
+        <span class="separador">:</span>
+        <div class="unidad">
+          <span class="numero" id="segundos">00</span>
+          <span class="etiqueta">segundos</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOTOS -->
+  <div class="fotos-seccion">
+    <p class="fotos-titulo">Nuestros momentos favoritos 📸</p>
+    <div class="fotos-grid" id="fotos-grid">
+
+      <!-- FOTO 1 -->
+      <div class="foto-frame" onclick="abrirLightbox(this)">
+        <img src="ft_1.jpeg" alt="nuestro primer día" />
+        <div class="foto-overlay"><span class="foto-caption">♡ nuestro primer día</span></div>
+      </div>
+
+      <!-- FOTO 2 -->
+      <div class="foto-frame" onclick="abrirLightbox(this)">
+        <img src="ft_2.jpeg" alt="sonriendo contigo" />
+        <div class="foto-overlay"><span class="foto-caption">♡ sonriendo contigo</span></div>
+      </div>
+
+      <!-- FOTO 3 -->
+      <div class="foto-frame" onclick="abrirLightbox(this)">
+        <img src="ft_3.jpeg" alt="mágico momento" />
+        <div class="foto-overlay"><span class="foto-caption">♡ mágico momento</span></div>
+      </div>
+
+      <!-- FOTO 4 -->
+      <div class="foto-frame" onclick="abrirLightbox(this)">
+        <img src="ft_6.jpeg" alt="nuestra aventura" />
+        <div class="foto-overlay"><span class="foto-caption">♡ nuestra aventura</span></div>
+      </div>
+
+      <!-- FOTO 5 -->
+      <div class="foto-frame" onclick="abrirLightbox(this)">
+        <img src="ft_5.jpeg" alt="siempre juntos" />
+        <div class="foto-overlay"><span class="foto-caption">♡ siempre juntos</span></div>
+      </div>
+
+      <!-- FOTO 6 -->
+      <div class="foto-frame" onclick="abrirLightbox(this)">
+        <img src="ft_4.jpeg" alt="te quiero mucho" />
+        <div class="foto-overlay"><span class="foto-caption">♡ le amo mucho</span></div>
+      </div>
+
+      <!-- FOTO 7 -->
+      <div class="foto-frame" onclick="abrirLightbox(this)">
+        <img src="ft_7.jpeg" alt="te quiero mucho" />
+        <div class="foto-overlay"><span class="foto-caption">♡ compartiendo momentos</span></div>
+      </div>
+
+      <!-- FOTO 8 -->
+      <div class="foto-frame" onclick="abrirLightbox(this)">
+        <img src="ft_8.jpeg" alt="te quiero mucho" />
+        <div class="foto-overlay"><span class="foto-caption">♡ vivir cosas bonitas</span></div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- MENSAJE FINAL -->
+  <div class="mensaje-final">
+    <p class="mensaje-texto">
+      "Cada segundo contigo vale más<br>
+      que toda una vida sin ti.<br>
+      Gracias por elegirme cada día,<br>
+      por tus risas, tus abrazos,<br>
+      y por hacerme sentir en casa."
+    </p>
+    <p class="firma">— con amor, siempre ♡ —</p>
+  </div>
+
+</div>
+
+<!-- Botón música -->
+<button id="btn-musica" onclick="toggleMusica()" title="Música">🎵</button>
+
+<!-- Lightbox -->
+<div id="lightbox" onclick="cerrarLightbox()">
+  <button id="lightbox-cerrar" onclick="cerrarLightbox()">✕</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<!-- Audio -->
+<audio id="cancion" loop>
+  <!-- 
+    PARA AÑADIR TU CANCIÓN: 
+    1. Descarga la canción como archivo .mp3
+    2. Ponla en la misma carpeta que este archivo HTML
+    3. Cambia "tu-cancion.mp3" por el nombre de tu archivo
+    
+    También puedes usar un link directo de internet:
+    <source src="https://link-directo-al-mp3.mp3" type="audio/mpeg">
+  -->
+  <source src="Vicente_Garcia_Carmesi.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+// ===== FECHA DE INICIO DE LA RELACIÓN =====
+// ↓ CAMBIA ESTO POR TU FECHA REAL ↓
+const FECHA_INICIO = new Date('2026-03-14T00:00:00'); 
+// Formato: AÑO-MES-DÍA
+
+// ===== ESTADO =====
+let musicaActiva = false;
+let contadorInterval;
+
+// ===== INIT =====
+crearEstrellas();
+iniciarCorazonesFlotantes();
+
+// ===== CREAR ESTRELLAS DE FONDO =====
+function crearEstrellas() {
+  const cont = document.getElementById('estrellas');
+  for (let i = 0; i < 120; i++) {
+    const s = document.createElement('div');
+    s.className = 'estrella';
+    const size = Math.random() * 2.5 + 0.5;
+    s.style.cssText = `
+      left: ${Math.random() * 100}%;
+      top: ${Math.random() * 100}%;
+      width: ${size}px;
+      height: ${size}px;
+      animation-duration: ${2 + Math.random() * 4}s;
+      animation-delay: ${Math.random() * 4}s;
+    `;
+    cont.appendChild(s);
+  }
+}
+
+// ===== CORAZONES FLOTANTES =====
+function iniciarCorazonesFlotantes() {
+  const cont = document.getElementById('corazones-bg');
+  const emojis = ['♡', '♥', '✿', '✦', '✧'];
+  setInterval(() => {
+    const h = document.createElement('div');
+    h.className = 'heart-bg';
+    h.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    h.style.cssText = `
+      left: ${Math.random() * 100}%;
+      font-size: ${10 + Math.random() * 20}px;
+      color: ${['#ff8fab', '#f5c842', '#c8a0d0'][Math.floor(Math.random() * 3)]};
+      animation-duration: ${8 + Math.random() * 10}s;
+      animation-delay: ${Math.random() * 3}s;
+      opacity: 0.3;
+    `;
+    cont.appendChild(h);
+    setTimeout(() => h.remove(), 18000);
+  }, 1200);
+}
+
+// ===== ABRIR MAGIA (clic en corazón) =====
+function abrirMagia(e) {
+  // Partículas de corazones al hacer clic
+  for (let i = 0; i < 15; i++) {
+    setTimeout(() => crearParticula(e.clientX, e.clientY), i * 60);
+  }
+
+  // Reproducir música automáticamente
+  setTimeout(() => {
+    intentarMusica();
+  }, 200);
+
+  // Mostrar contenido principal
+  setTimeout(() => {
+    document.getElementById('pantalla-inicio').classList.add('oculto');
+    document.getElementById('contenido-principal').classList.add('visible');
+    iniciarContador();
+  }, 800);
+}
+
+function crearParticula(x, y) {
+  const p = document.createElement('div');
+  p.className = 'particula';
+  p.textContent = ['♡', '♥', '✿'][Math.floor(Math.random() * 3)];
+  p.style.cssText = `
+    left: ${x + (Math.random() - 0.5) * 80}px;
+    top: ${y + (Math.random() - 0.5) * 80}px;
+    color: ${['#ff8fab', '#f5c842', '#c8a0d0', '#ff006e'][Math.floor(Math.random() * 4)]};
+    animation-duration: ${1 + Math.random() * 1.5}s;
+  `;
+  document.body.appendChild(p);
+  setTimeout(() => p.remove(), 2500);
+}
+
+// ===== CONTADOR =====
+function iniciarContador() {
+  actualizarContador();
+  contadorInterval = setInterval(actualizarContador, 1000);
+}
+
+function actualizarContador() {
+  const ahora = new Date();
+  const diferencia = ahora - FECHA_INICIO;
+
+  if (diferencia < 0) {
+    document.getElementById('dias').textContent = '00';
+    document.getElementById('horas').textContent = '00';
+    document.getElementById('minutos').textContent = '00';
+    document.getElementById('segundos').textContent = '00';
+    return;
+  }
+
+  const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+  const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+  const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
+
+  document.getElementById('dias').textContent = String(dias).padStart(2, '0');
+  document.getElementById('horas').textContent = String(horas).padStart(2, '0');
+  document.getElementById('minutos').textContent = String(minutos).padStart(2, '0');
+  document.getElementById('segundos').textContent = String(segundos).padStart(2, '0');
+}
+
+// ===== MÚSICA =====
+function intentarMusica() {
+  const audio = document.getElementById('cancion');
+  audio.volume = 0.5;
+  const promise = audio.play();
+  if (promise) {
+    promise.then(() => {
+      musicaActiva = true;
+      document.getElementById('btn-musica').textContent = '🔊';
+    }).catch(() => {
+      musicaActiva = false;
+      document.getElementById('btn-musica').textContent = '🎵';
+    });
+  }
+}
+
+function toggleMusica() {
+  const audio = document.getElementById('cancion');
+  if (musicaActiva) {
+    audio.pause();
+    musicaActiva = false;
+    document.getElementById('btn-musica').textContent = '🎵';
+  } else {
+    intentarMusica();
+  }
+}
+
+// ===== LIGHTBOX =====
+function abrirLightbox(frame) {
+  const img = frame.querySelector('img');
+  if (!img) return;
+  document.getElementById('lightbox-img').src = img.src;
+  document.getElementById('lightbox').classList.add('activo');
+}
+
+function cerrarLightbox() {
+  document.getElementById('lightbox').classList.remove('activo');
+}
+
+// ===== DRAG & DROP de fotos (bonus) =====
+document.querySelectorAll('.foto-frame').forEach((frame, i) => {
+  frame.addEventListener('dragover', e => { e.preventDefault(); frame.style.borderColor = '#f5c842'; });
+  frame.addEventListener('dragleave', () => { frame.style.borderColor = ''; });
+  frame.addEventListener('drop', e => {
+    e.preventDefault();
+    frame.style.borderColor = '';
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = ev => {
+        const placeholder = frame.querySelector('.foto-placeholder');
+        if (placeholder) placeholder.remove();
+        let img = frame.querySelector('img');
+        if (!img) {
+          img = document.createElement('img');
+          frame.insertBefore(img, frame.firstChild);
+        }
+        img.src = ev.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+});
+</script>
+</body>
+</html>
